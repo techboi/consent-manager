@@ -69,7 +69,7 @@ const WrapperComponent: React.FC = () => {
       var key = analytics.methods[e]
       analytics[key] = analytics.factory(key)
     }
-    analytics.load = function(key: String, e: any) {
+    analytics.load = function(key: string, e: any) {
       var t = document.createElement('script')
       t.type = 'text/javascript'
       t.async = !0
@@ -93,7 +93,7 @@ const WrapperComponent: React.FC = () => {
 }
 
 // @todo required options are not yet possible.
-// See: https://github.com/techboi/consent-manager/issues/19
+// See: https://github.com/hashbite/consent-manager/issues/19
 interface SegmentConfig extends IntegrationConfigOptions {
   writeKey?: string // @todo this should be required
 }

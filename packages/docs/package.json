@@ -1,17 +1,17 @@
 {
   "name": "docs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Docs for consent-manager. Built with Docusaurus.",
   "private": true,
   "author": {
-    "name": "techboi GmbH",
-    "email": "opensource@techboi.io",
-    "url": "https://techboi.io/"
+    "name": "hashbite",
+    "email": "opensource@hashbite.net",
+    "url": "https://hashbite.net/"
   },
   "contributors": [
     {
       "name": "Benedikt Rötsch",
-      "email": "benedikt@techboi.io",
+      "email": "benedikt@hashbite.net",
       "url": "https://twitter.com/axe312ger"
     },
     {
@@ -22,10 +22,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/techboi/consent-manager",
+    "url": "git+https://github.com/hashbite/consent-manager",
     "directory": "packages/docs"
   },
-  "homepage": "https://techboi.github.io/consent-manager/",
+  "homepage": "https://hashbite.github.io/consent-manager/",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -36,18 +36,18 @@
     "clear": "docusaurus clear"
   },
   "dependencies": {
-    "@consent-manager/core": "*",
-    "@consent-manager/integration-algolia": "*",
-    "@consent-manager/integration-google-analytics": "*",
-    "@consent-manager/integration-google-tag-manager": "*",
-    "@consent-manager/integration-hubspot": "*",
-    "@consent-manager/integration-linkedin": "*",
-    "@consent-manager/integration-mapbox": "*",
-    "@consent-manager/integration-matomo": "*",
-    "@consent-manager/integration-segment": "*",
-    "@consent-manager/integration-vimeo": "*",
-    "@consent-manager/integration-youtube": "*",
-    "@consent-manager/interface-default": "*",
+    "@consent-manager/core": "^0.0.1",
+    "@consent-manager/integration-algolia": "^0.0.1",
+    "@consent-manager/integration-google-analytics": "0.0.1",
+    "@consent-manager/integration-google-tag-manager": "0.0.1",
+    "@consent-manager/integration-hubspot": "0.0.1",
+    "@consent-manager/integration-linkedin": "0.0.1",
+    "@consent-manager/integration-mapbox": "^0.0.1",
+    "@consent-manager/integration-matomo": "^0.0.1",
+    "@consent-manager/integration-segment": "0.0.1",
+    "@consent-manager/integration-vimeo": "^0.0.1",
+    "@consent-manager/integration-youtube": "^0.0.1",
+    "@consent-manager/interface-default": "^0.0.1",
     "@docusaurus/core": "2.0.0-alpha.71",
     "@docusaurus/preset-classic": "2.0.0-alpha.71",
     "@mdx-js/react": "^1.6.21",

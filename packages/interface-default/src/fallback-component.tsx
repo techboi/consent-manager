@@ -5,27 +5,23 @@ import {
   FallbackComponentProps,
 } from '@consent-manager/core'
 import clsx from 'clsx'
-import { Trans } from '@lingui/react'
-import { IoShieldCheckmark } from '@react-icons/all-files/io5/IoShieldCheckmark'
+import { Trans } from './trans'
 
 import { ButtonProps, Styles, IconProps } from '.'
 import { IntegrationLabel } from './integration-label'
-import defaultStyles from './index.module.css'
 import { ConsentManagerDefaultInterfaceContext } from './context'
 
 interface StyleableFallbackComponentProps extends FallbackComponentProps {
-  styles?: Styles
-  Button?: React.ComponentType<ButtonProps>
-  Icon?: React.ComponentType<IconProps>
+  styles: Styles
+  Button: React.ComponentType<ButtonProps>
+  ToggleIcon: React.ComponentType<IconProps>
 }
-
-const DefaultButton: React.FC = props => <button {...props} />
 
 export const FallbackComponent: React.FC<StyleableFallbackComponentProps> = ({
   integrationId,
-  Button = DefaultButton,
-  styles = defaultStyles,
-  Icon = IoShieldCheckmark,
+  Button,
+  styles,
+  ToggleIcon,
 }) => {
   const { setFormVisible } = useContext(ConsentManagerDefaultInterfaceContext)
   const integration = useIntegration(integrationId)
@@ -38,53 +34,49 @@ export const FallbackComponent: React.FC<StyleableFallbackComponentProps> = ({
     throw new Error(`Integration ${integrationId} could not be found.`)
   }
 
+  const { category, title } = integration
+
   return (
     <section className={clsx(styles.fallbackComponent)}>
       <div className={clsx(styles.fallbackComponentContent)}>
         <h1 className={clsx(styles.fallbackComponentTitle)}>
-          <Icon className={clsx(styles.fallbackComponentIcon)} />
+          <ToggleIcon
+            className={clsx(styles.icon, styles.fallbackComponentIcon)}
+          />
           <Trans
             id={`consent-manager.fallback.${integrationId}.title`}
-            message="Recommended external content"
+            fallbackId={`consent-manager.fallback.default.title`}
           />
         </h1>
         <Trans
           id={`consent-manager.fallback.${integrationId}.description`}
-          message={[
-            '<1>This feature contains content by <0/></1>',
-            '<2>To view this third-party content, you first have to accept their specific terms and conditions.</2>',
-            '<3>This includes their cookie policies, which we have no control over.</3>',
-          ].join('')}
-          components={[
-            <IntegrationLabel styles={styles} integration={integration} />,
-            <p />,
-            <p />,
-            <p />,
-            <p />,
-            <p />,
-          ]}
+          fallbackId={`consent-manager.fallback.default.description`}
+          props={{
+            IntegrationLabel: () => (
+              <IntegrationLabel styles={styles} integration={integration} />
+            ),
+            category,
+            title,
+          }}
         />
         <div className={clsx(styles.fallbackComponentControls)}>
-          <Button
-            className={clsx(styles.buttonReset, styles.button)}
-            onClick={() => setFormVisible(true)}
-          >
+          <Button onClick={() => setFormVisible(true)}>
             <Trans
               id={`consent-manager.fallback.${integrationId}.learn-more`}
-              message="Learn more"
+              fallbackId={`consent-manager.fallback.default.learn-more`}
             />
           </Button>
           <Button
-            className={clsx(
-              styles.buttonReset,
-              styles.button,
-              styles.buttonPrimary
-            )}
+            data-button-style="primary"
             onClick={() => enableIntegration()}
           >
             <Trans
               id={`consent-manager.fallback.${integrationId}.enable`}
-              message={`Enable ${integration.title}`}
+              fallbackId={`consent-manager.fallback.default.enable`}
+              props={{
+                category,
+                title,
+              }}
             />
           </Button>
         </div>

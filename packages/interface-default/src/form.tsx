@@ -5,36 +5,33 @@ import {
   DecisionsFormProps,
   IntegrationConfigOptions,
 } from '@consent-manager/core'
-import { Trans } from '@lingui/react'
+import { Trans } from './trans'
 
-import defaultStyles from './index.module.css'
-import { Switch as DefaultSwitch, SwitchProps } from './switch'
 import { Integration } from './integration'
-import { Styles, ButtonProps } from './index'
-import { IconProps } from './interface'
+import { Styles, ButtonProps, IconProps, SwitchProps } from './index'
 import { ConsentManagerDefaultInterfaceContext } from './context'
 
 export interface ConsentFormProps extends DecisionsFormProps {
   styles: Styles
+  ToggleIcon: React.ComponentType<IconProps>
   CloseIcon: React.ComponentType<IconProps>
-  Switch?: React.ComponentType<SwitchProps>
-  Button?: React.ComponentType<ButtonProps>
+  Switch: React.ComponentType<SwitchProps>
+  Button: React.ComponentType<ButtonProps>
 }
 
 interface FormState {
   [key: string]: boolean
 }
 
-const DefaultButton: React.FC<ButtonProps> = props => <button {...props} />
-
 export const ConsentForm: React.FC<ConsentFormProps> = ({
   integrations,
   initialValues,
   onSubmit,
   CloseIcon,
-  styles = defaultStyles,
-  Switch = DefaultSwitch,
-  Button = DefaultButton,
+  ToggleIcon,
+  styles,
+  Switch,
+  Button,
 }) => {
   const { setFormVisible } = useContext(ConsentManagerDefaultInterfaceContext)
 
@@ -73,12 +70,8 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({
         render={({ handleSubmit, form }) => {
           const controls = (
             <div className={clsx(styles.formControls)}>
-              <Button
-                type="button"
-                onClick={form.reset}
-                className={clsx(styles.buttonReset, styles.button)}
-              >
-                <Trans id="consent-manager.form.reset" message="Reset" />
+              <Button type="button" onClick={form.reset}>
+                <Trans id="consent-manager.form.reset" />
               </Button>
               <Button
                 type="button"
@@ -89,12 +82,8 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({
                     }
                   })
                 }
-                className={clsx(styles.buttonReset, styles.button)}
               >
-                <Trans
-                  id="consent-manager.form.disable-all"
-                  message="Disable all"
-                />
+                <Trans id="consent-manager.form.disable-all" />
               </Button>
               <Button
                 type="button"
@@ -105,25 +94,11 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({
                     }
                   })
                 }
-                className={clsx(styles.buttonReset, styles.button)}
               >
-                <Trans
-                  id="consent-manager.form.enable-all"
-                  message="Enable all"
-                />
+                <Trans id="consent-manager.form.enable-all" />
               </Button>
-              <Button
-                type="submit"
-                className={clsx(
-                  styles.buttonReset,
-                  styles.button,
-                  styles.buttonPrimary
-                )}
-              >
-                <Trans
-                  id="consent-manager.form.save"
-                  message="Save and close"
-                />
+              <Button type="submit" data-button-style="primary">
+                <Trans id="consent-manager.form.save" />
               </Button>
             </div>
           )
@@ -133,21 +108,17 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({
               <div className={clsx(styles.formIntro)}>
                 <div className={clsx(styles.formContent)}>
                   <h1 className={clsx(styles.formTitle)}>
-                    <Trans
-                      id="consent-manager.form.headline"
-                      message="Website Features and Cookies"
+                    <ToggleIcon
+                      className={clsx(styles.icon, styles.formIcon)}
                     />
+                    <Trans id="consent-manager.form.headline" />
                   </h1>
-                  <Trans
-                    id="consent-manager.form.description"
-                    message="<0>Some features are disabled by default Third Party Services are disabled to protect your privacy.</0><1>To fully experience this website enable the following features:</1>"
-                    components={[<p />, <p />, <p />, <p />, <p />]}
-                  />
+                  <Trans id="consent-manager.form.description" />
                 </div>
               </div>
               {controls}
               <div className={clsx(styles.formIntegrations)}>
-                <div className={clsx(styles.formContent)}>
+                <div className={clsx(styles.formIntegrationsList)}>
                   {integrations.map((integration: IntegrationConfigOptions) => (
                     <Integration
                       styles={styles}
@@ -165,8 +136,7 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({
       />
       <Trans
         id="consent-manager.close"
-        message="close"
-        render={({ translation }) => (
+        render={({ message }) => (
           <button
             className={clsx(
               styles.buttonReset,
@@ -174,7 +144,7 @@ export const ConsentForm: React.FC<ConsentFormProps> = ({
               styles.formButtonClose
             )}
             onClick={onClose}
-            title={String(translation)}
+            title={message}
           >
             <CloseIcon className={clsx(styles.buttonCloseIcon)} />
           </button>

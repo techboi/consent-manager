@@ -2,11 +2,11 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { CSSTransition } from 'react-transition-group'
 import createActivityDetector from 'activity-detector-ssr'
-import { Trans } from '@lingui/react'
+import { Trans } from './trans'
 
 import { useDecisions } from '@consent-manager/core'
 
-import { Styles, IconProps } from './index'
+import { Styles, IconProps, ButtonProps } from './index'
 import defaultStyles from './index.module.css'
 import defaultAnimationStyles from './animation-slide.module.css'
 import { ConsentManagerDefaultInterfaceContext } from './context'
@@ -18,6 +18,7 @@ export interface IntroductionProps {
   animationStyles?: Styles
   slideDuration: number
   noActionDelay?: number
+  Button: React.ComponentType<ButtonProps>
 }
 
 interface ActivityDetector {
@@ -31,6 +32,7 @@ export const Introduction: React.FC<IntroductionProps> = ({
   styles = defaultStyles,
   animationStyles = defaultAnimationStyles,
   slideDuration,
+  Button,
   noActionDelay = 4000,
 }) => {
   const { setFormVisible } = useContext(ConsentManagerDefaultInterfaceContext)
@@ -107,45 +109,22 @@ export const Introduction: React.FC<IntroductionProps> = ({
         <div className={clsx(styles.introductionShape)} />
         <div className={clsx(styles.introductionContent)}>
           <h1 className={clsx(styles.introductionTitle)}>
-            <Trans
-              id="consent-manager.introduction.title"
-              message="Data protection enabled"
-            />
+            <Trans id="consent-manager.introduction.title" />
           </h1>
           <p className={clsx(styles.introductionDescription)}>
-            <Trans
-              id="consent-manager.introduction.description"
-              message="Some website features are disabled to protect your privacy."
-            />
+            <Trans id="consent-manager.introduction.description" />
           </p>
           <div className={clsx(styles.introductionControls)}>
-            <button
-              className={clsx(styles.buttonReset, styles.button)}
-              onClick={onLearnMore}
-            >
-              <Trans
-                id="consent-manager.introduction.learn-more"
-                message="Learn more"
-              />
-            </button>
-            <button
-              className={clsx(
-                styles.buttonReset,
-                styles.button,
-                styles.buttonPrimary
-              )}
-              onClick={onEnableAll}
-            >
-              <Trans
-                id="consent-manager.introduction.enable-all"
-                message="Enable all features"
-              />
-            </button>
+            <Button onClick={onLearnMore}>
+              <Trans id="consent-manager.introduction.learn-more" />
+            </Button>
+            <Button data-button-style="primary" onClick={onEnableAll}>
+              <Trans id="consent-manager.introduction.enable-all" />
+            </Button>
           </div>
           <Trans
             id="consent-manager.close"
-            message="close"
-            render={({ translation }) => (
+            render={({ message }) => (
               <button
                 className={clsx(
                   styles.buttonReset,
@@ -153,7 +132,7 @@ export const Introduction: React.FC<IntroductionProps> = ({
                   styles.buttonClose
                 )}
                 onClick={onClose}
-                title={String(translation)}
+                title={message}
               >
                 <CloseIcon className={clsx(styles.buttonCloseIcon)} />
               </button>
